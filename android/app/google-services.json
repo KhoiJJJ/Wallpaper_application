@@ -12,7 +12,20 @@
           "package_name": "app.wallpaper"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "638251972172-ibvfd3bao8tj0qht3ebcp1554firvi3g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.wallpaper",
+            "certificate_hash": "060e20a9de62f07ad1418d084b88a7fed53e9c98"
+          }
+        },
+        {
+          "client_id": "638251972172-g6hbstp9rcsrke5lqffucmsch3kh4njm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyC0WNnXqNIb-JufvqEHrTXi7Luk7Xe95V4"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "638251972172-g6hbstp9rcsrke5lqffucmsch3kh4njm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
