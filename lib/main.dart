@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_2/Provider/add_wallpaper_provider.dart';
 import 'package:flutter_application_2/Screens/spalsh_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,10 +15,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-
-      home: SplashPage(),
-      debugShowCheckedModeBanner: false,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_)=> UploadWallPaperProvider()),
+      ],
+      child: const MaterialApp(
+    
+        home: SplashPage(),
+        debugShowCheckedModeBanner: false,
+      ),
     );
   }
 }

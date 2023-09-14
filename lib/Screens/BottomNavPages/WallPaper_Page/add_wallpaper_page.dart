@@ -1,6 +1,13 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../../Provider/add_wallpaper_provider.dart';
+import '../../../Utils/pick_file.dart';
 import '../../../Widgets/custom.button.dart';
+import '../../../Widgets/show_alert.dart';
 
 class AddWallPaperPage extends StatefulWidget {
   const AddWallPaperPage({super.key});
@@ -11,6 +18,8 @@ class AddWallPaperPage extends StatefulWidget {
 
 class _AddWallPaperPageState extends State<AddWallPaperPage> {
   TextEditingController controller = TextEditingController();
+
+  String image='';
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,18 +44,48 @@ class _AddWallPaperPageState extends State<AddWallPaperPage> {
                     height: 20,
                   ),
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                       pickImage().then((value) {
+                          setState(() {
+                            image = value;
+                          });
+                        });
+                    },
+                    
                     child: const SizedBox(
                       height: 50,
                       width: 50,
                       child: Icon(Icons.camera),
                     ),
                   ),
-                  customButton(
-                      text: "Upload",
-                      onTap: () {},
-                      textColor: Colors.white,
-                      bgColor: Colors.blue,
+                   if (image != '') Image.file(File(image)),
+                  Consumer<UploadWallPaperProvider>(
+                    builder: (context, add,child) {
+                      WidgetsBinding.instance!.addPostFrameCallback((_) { 
+                        if(add.message != ''){
+                          showAlert(context, add.message);
+                          add.clear();
+                                                  }
+                      }); 
+                      return customButton(
+                          text: "Upload",
+                          onTap:add.status==true? null: () {
+                            final uid = FirebaseAuth.instance.currentUser!.uid;
+
+                            if(image != ''){
+                               add.addWallPaper(
+                                    wallPaperImage: File(image),
+                                    uid: uid,
+                                    price: controller.text,
+                               );
+                            }else{
+                              showAlert(context, "Upload ảnh");
+                            }
+                          },
+                          textColor: Colors.white,
+                          bgColor:add.status==true? Colors.grey: Colors.blue,
+                      );
+                    }
                   )    
                 ]),
               ),

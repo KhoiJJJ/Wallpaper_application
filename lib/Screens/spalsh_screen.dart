@@ -24,7 +24,7 @@ class _SplashPageState extends State<SplashPage> {
     });
     return const Scaffold(
       body: Center(
-        child: const Center(
+        child: Center(
               child: CircleAvatar(
                 backgroundColor: Colors.white,
                 radius: 200,
