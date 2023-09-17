@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/Provider/auth_provider.dart';
 import 'package:flutter_application_2/Screens/Authentication/auth_page.dart';
-import 'package:flutter_application_2/Screens/BottomNavPages/WallPaper_Page/all_wallpaper_page.dart';
+import 'package:flutter_application_2/Screens/BottomNavPages/all_image.dart';
 import 'package:flutter_application_2/Screens/BottomNavPages/download_page.dart';
-import 'package:flutter_application_2/Utils/routers.dart';
+
+import '../Widgets/custome_app_bar.dart';
 
 class MainActivityPage extends StatefulWidget {
   const MainActivityPage({super.key});
@@ -15,27 +16,38 @@ class MainActivityPage extends StatefulWidget {
 class _MainActivityPageState extends State<MainActivityPage> {
   int pageIndex = 0;
   List<Map> bottomNavItems=[
+    {'icon':Icons.image,'title':'All Image'},
     {'icon':Icons.home,'title':'Home'},
-    {'icon':Icons.download,'title':'Download'},
+    {'icon':Icons.favorite,'title':'Favorites'},
   ];
 
   List<Widget> bottomNavPages=[
-    const WallPaperHomePage(),
-    const DownloadPage(),
+    Wallpaper(),
+   
   ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Wall Paper App'),
+        centerTitle: true,
+        elevation: 0.0,
+        backgroundColor: Colors.white,
+        title: CustomAppBar(
+          word1: "Wallpaper",
+          word2: "PexelArt",
+        ),
         actions: [
           IconButton(
             onPressed: (){
               AuthenticationProvider().signOut().then((value) {
-                nextPageOnly(context: context,page: const AuthPage());
+                Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>  AuthPage()
+                                    ),(route)=>false);
               });
             },
-             icon: const Icon(Icons.exit_to_app),)
+             icon: const Icon(Icons.exit_to_app),color: Colors.black,)
         ],
       ),
       body: bottomNavPages[pageIndex],

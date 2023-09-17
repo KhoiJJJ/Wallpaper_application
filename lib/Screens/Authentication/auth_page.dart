@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/Provider/auth_provider.dart';
 import 'package:flutter_application_2/Screens/main_activity.dart';
-import 'package:flutter_application_2/Utils/routers.dart';
 
 import '../../Widgets/show_alert.dart';
 
@@ -96,7 +95,11 @@ class _AuthPageState extends State<AuthPage> {
               onTap: () {
                 AuthenticationProvider().signInWithGoogle().then((value) {
                   showAlert(context, "Bạn đăng nhập thành công");
-                  nextPageOnly(page: const MainActivityPage(), context: context);
+                  Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>  MainActivityPage()
+                                    ),(route)=>false);
                 }).catchError((e){
                   showAlert(context, e.toString());
                 });
