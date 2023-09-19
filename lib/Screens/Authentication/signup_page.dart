@@ -1,56 +1,55 @@
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_2/Provider/auth_provider.dart';
-import 'package:flutter_application_2/Screens/Authentication/signup_page.dart';
 import 'package:flutter_application_2/Screens/main_activity.dart';
-
 import '../../Widgets/custome_app_bar.dart';
-import '../../Widgets/show_alert.dart';
+import 'auth_page.dart';
 
-class AuthPage extends StatefulWidget {
-  const AuthPage({super.key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({super.key});
 
   @override
-  State<AuthPage> createState() => _AuthPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _AuthPageState extends State<AuthPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-
-  Future<UserCredential?> signIn() async {
-    try {
-      final UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: _emailController.text.trim(),
-        password: _passwordController.text.trim(),
-      );
-
-      // If login is successful, navigate to MainPage
-      Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const MainActivityPage()),
-                    (route) => false);
-
-      return userCredential;
-    } catch (e) {
-      // Handle sign-in errors here
-      print('Sign-In Error: $e');
-      return null; // Return null to indicate an error during sign-in
-    }
-  }
+  final _confirmPasswordController = TextEditingController();
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
+  Future signUp() async{
+    if(passwordConfirmed()){
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      email: _emailController.text.trim(), 
+      password: _passwordController.text.trim()
+      );
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => MainActivityPage(), // Replace with your MainPage widget
+        ),
+      );
+    }
+  
+  }
+
+  bool passwordConfirmed(){
+    if(_passwordController.text.trim()== _confirmPasswordController.text.trim()){
+      return true;
+    }else{
+      return false;
+    }
+  }
+  
   @override
   Widget build(BuildContext context) {
-    var signUpImages = ['g.png', 'f.png', 't.png'];
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -84,11 +83,11 @@ class _AuthPageState extends State<AuthPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const Text(
-                    "Hello Again",
+                    "Hello There",
                     style: TextStyle(fontSize: 52, fontWeight: FontWeight.bold),
                   ),
                   Text(
-                    "Welcome back, you've been missed!",
+                    "Rigister below with your details!",
                     style: TextStyle(
                       fontSize: 20,
                       color: Colors.grey[500],
@@ -105,6 +104,7 @@ class _AuthPageState extends State<AuthPage> {
                 preferredSize: const Size.fromHeight(120.0),
                 child: Column(
                   children: [
+                    //email field
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25),
                       child: TextField(
@@ -128,6 +128,7 @@ class _AuthPageState extends State<AuthPage> {
                     const SizedBox(
                       height: 15,
                     ),
+                    //password field
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25),
                       child: TextField(
@@ -151,11 +152,37 @@ class _AuthPageState extends State<AuthPage> {
                       ),
                     ),
                     const SizedBox(
+                      height: 15,
+                    ),
+                    //confirmed password field
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25),
+                      child: TextField(
+                        obscureText: true,
+                        controller: _confirmPasswordController,
+                        decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(color: Colors.white),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                const BorderSide(color: Colors.deepPurple),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          hintText: 'Confirm Password',
+                          fillColor: Colors.grey[200],
+                          filled: true,
+                        
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
                       height: 20,
                     ),
                     GestureDetector(
                       onTap: () {
-                        signIn();
+                        signUp();
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -167,7 +194,7 @@ class _AuthPageState extends State<AuthPage> {
                           ),
                           child: const Center(
                               child: Text(
-                            'Sign In',
+                            'Sign Up',
                             style: TextStyle(
                                 color: Colors.white,
                                 fontWeight: FontWeight.bold,
@@ -176,45 +203,7 @@ class _AuthPageState extends State<AuthPage> {
                         ),
                       ),
                     ),
-                  ],
-                )),
-
-            const SizedBox(
-              height: 50,
-            ),
-
-            RichText(
-              text: TextSpan(
-                  text: "Or Login by another mothods:",
-                  style: TextStyle(color: Colors.grey[500], fontSize: 16)),
-            ),
-            GestureDetector(
-              onTap: () {
-                AuthenticationProvider().signInWithGoogle().then((value) {
-                  showAlert(context, "You logged in");
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const MainActivityPage()),
-                      (route) => false);
-                }).catchError((e) {
-                  showAlert(context, e.toString());
-                });
-              },
-              child: Wrap(
-                children: List.generate(
-                    3,
-                    (index) => Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: CircleAvatar(
-                            radius: 30,
-                            backgroundImage: AssetImage(
-                                "assets/image/${signUpImages[index]}"),
-                          ),
-                        )),
-              ),
-            ),
-            const SizedBox(
+                    const SizedBox(
               height: 50,
             ),
 
@@ -223,16 +212,16 @@ class _AuthPageState extends State<AuthPage> {
                 Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>  const RegisterPage()
+                                builder: (context) =>  const AuthPage()
                                     ),(route)=>false);
               },
               child: RichText(
                 text: TextSpan(
-                    text: "Not a member?",
+                    text: "You're a member?",
                     style: TextStyle(color: Colors.grey[500], fontSize: 20),
                     children: const [
                       TextSpan(
-                        text: "Register now",
+                        text: "Login now",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.blue,
@@ -241,6 +230,11 @@ class _AuthPageState extends State<AuthPage> {
                     ]),
               ),
             ),
+                  ],
+                )
+                ),
+
+            
           ],
         ),
       ),

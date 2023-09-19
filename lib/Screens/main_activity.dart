@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_2/Provider/auth_provider.dart';
 import 'package:flutter_application_2/Screens/Authentication/auth_page.dart';
 import 'package:flutter_application_2/Screens/BottomNavPages/all_image.dart';
-import 'package:flutter_application_2/Screens/BottomNavPages/download_page.dart';
+
 
 import '../Widgets/custome_app_bar.dart';
 
@@ -16,9 +16,8 @@ class MainActivityPage extends StatefulWidget {
 class _MainActivityPageState extends State<MainActivityPage> {
   int pageIndex = 0;
   List<Map> bottomNavItems=[
-    {'icon':Icons.image,'title':'All Image'},
     {'icon':Icons.home,'title':'Home'},
-    {'icon':Icons.favorite,'title':'Favorites'},
+    {'icon':Icons.person,'title':'Profile'},
   ];
 
   List<Widget> bottomNavPages=[

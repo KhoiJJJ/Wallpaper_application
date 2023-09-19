@@ -64,8 +64,9 @@ class _WallpaperSetterState extends State<WallpaperSetter> {
               onTap: () {
                 setState(() {
                   showAlert(context, "Please wait... Applying");
-                  setWallpaper();
                   wallpaperType = WallpaperType.home;
+                  setWallpaper();
+                  
                 });
                 Navigator.of(context).pop();
               },
@@ -79,8 +80,9 @@ class _WallpaperSetterState extends State<WallpaperSetter> {
               onTap: () {
                 setState(() {
                   showAlert(context, "Please wait... Applying");
-                  setWallpaper();
                   wallpaperType = WallpaperType.lock;
+                  setWallpaper();
+                  
                 });
                 Navigator.of(context).pop();
               },
@@ -94,8 +96,9 @@ class _WallpaperSetterState extends State<WallpaperSetter> {
               onTap: () {
                 setState(() {
                   showAlert(context, "Please wait... Applying");
-                  setWallpaper();
                   wallpaperType = WallpaperType.both;
+                  setWallpaper();
+                  
                 });
                 Navigator.of(context).pop();
               },
