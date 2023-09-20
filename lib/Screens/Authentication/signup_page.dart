@@ -107,7 +107,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     //email field
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25),
-                      child: TextField(
+                      child: TextField(                       
                         controller: _emailController,
                         decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(

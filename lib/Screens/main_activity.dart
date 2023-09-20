@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_2/Provider/auth_provider.dart';
-import 'package:flutter_application_2/Screens/Authentication/auth_page.dart';
 import 'package:flutter_application_2/Screens/BottomNavPages/all_image.dart';
+import 'package:flutter_application_2/Screens/BottomNavPages/person.dart';
 
 
 import '../Widgets/custome_app_bar.dart';
@@ -22,7 +21,7 @@ class _MainActivityPageState extends State<MainActivityPage> {
 
   List<Widget> bottomNavPages=[
     Wallpaper(),
-   
+    const AccountPage(),
   ];
   @override
   Widget build(BuildContext context) {
@@ -35,19 +34,7 @@ class _MainActivityPageState extends State<MainActivityPage> {
           word1: "Wallpaper",
           word2: "PexelArt",
         ),
-        actions: [
-          IconButton(
-            onPressed: (){
-              AuthenticationProvider().signOut().then((value) {
-                Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>  AuthPage()
-                                    ),(route)=>false);
-              });
-            },
-             icon: const Icon(Icons.exit_to_app),color: Colors.black,)
-        ],
+        
       ),
       body: bottomNavPages[pageIndex],
       bottomNavigationBar: BottomNavigationBar(

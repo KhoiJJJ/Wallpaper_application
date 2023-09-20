@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/Provider/auth_provider.dart';
+import 'package:flutter_application_2/Screens/Authentication/forgot_pw_page.dart';
 import 'package:flutter_application_2/Screens/Authentication/signup_page.dart';
 import 'package:flutter_application_2/Screens/main_activity.dart';
 
@@ -28,10 +29,9 @@ class _AuthPageState extends State<AuthPage> {
 
       // If login is successful, navigate to MainPage
       Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const MainActivityPage()),
-                    (route) => false);
+          context,
+          MaterialPageRoute(builder: (context) => const MainActivityPage()),
+          (route) => false);
 
       return userCredential;
     } catch (e) {
@@ -59,7 +59,8 @@ class _AuthPageState extends State<AuthPage> {
         title: CustomAppBar(
           word1: "Wallpaper",
           word2: "PexelArt",
-        ),),
+        ),
+      ),
       body: SingleChildScrollView(
         physics: const NeverScrollableScrollPhysics(),
         child: Column(
@@ -146,9 +147,31 @@ class _AuthPageState extends State<AuthPage> {
                           hintText: 'Password',
                           fillColor: Colors.grey[200],
                           filled: true,
-                        
                         ),
                       ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const ForgotPasswordPage()),
+                                    );
+                              },
+                              child: const Text(
+                                'Forgot Password?',
+                                style: TextStyle(
+                                    color: Colors.blue,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ]),
                     ),
                     const SizedBox(
                       height: 20,
@@ -219,12 +242,12 @@ class _AuthPageState extends State<AuthPage> {
             ),
 
             GestureDetector(
-              onTap: (){
+              onTap: () {
                 Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>  const RegisterPage()
-                                    ),(route)=>false);
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const RegisterPage()),
+                    (route) => false);
               },
               child: RichText(
                 text: TextSpan(
