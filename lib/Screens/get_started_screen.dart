@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../Theme/app.color.dart';
 import 'Authentication/auth_page.dart';
 import 'main_activity.dart';
 
@@ -80,7 +79,7 @@ class GetStartedScreen extends StatelessWidget {
                       style: Theme.of(context)
                           .textTheme
                           .titleMedium
-                          ?.copyWith(color: AppColor.white),
+                          ?.copyWith(color: Colors.white),
                     ),
                   ),
                 )

@@ -1,4 +1,4 @@
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/Screens/main_activity.dart';
@@ -16,38 +16,49 @@ class _RegisterPageState extends State<RegisterPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
+  final _phoneController = TextEditingController();
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
+    _phoneController.dispose();
     super.dispose();
   }
 
-  Future signUp() async{
-    if(passwordConfirmed()){
+  Future signUp() async {
+    if (passwordConfirmed()) {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(
-      email: _emailController.text.trim(), 
-      password: _passwordController.text.trim()
-      );
+          email: _emailController.text.trim(),
+          password: _passwordController.text.trim());
+      addUserInfor(_emailController.text.trim(), _phoneController.text.trim());
+
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => MainActivityPage(), // Replace with your MainPage widget
+          builder: (context) =>
+              MainActivityPage(), // Replace with your MainPage widget
         ),
       );
     }
-  
   }
 
-  bool passwordConfirmed(){
-    if(_passwordController.text.trim()== _confirmPasswordController.text.trim()){
+  bool passwordConfirmed() {
+    if (_passwordController.text.trim() ==
+        _confirmPasswordController.text.trim()) {
       return true;
-    }else{
+    } else {
       return false;
     }
   }
-  
+
+  Future addUserInfor(String email, String phoneNumber) async {
+    await FirebaseFirestore.instance.collection('users').add({
+      'email': email,
+      'phoneNumber': phoneNumber,
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,7 +69,8 @@ class _RegisterPageState extends State<RegisterPage> {
         title: CustomAppBar(
           word1: "Wallpaper",
           word2: "PexelArt",
-        ),),
+        ),
+      ),
       body: SingleChildScrollView(
         physics: const NeverScrollableScrollPhysics(),
         child: Column(
@@ -107,7 +119,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     //email field
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 25),
-                      child: TextField(                       
+                      child: TextField(
                         controller: _emailController,
                         decoration: InputDecoration(
                           enabledBorder: OutlineInputBorder(
@@ -120,6 +132,29 @@ class _RegisterPageState extends State<RegisterPage> {
                             borderRadius: BorderRadius.circular(12),
                           ),
                           hintText: 'Email',
+                          fillColor: Colors.grey[200],
+                          filled: true,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25),
+                      child: TextField(
+                        controller: _phoneController,
+                        decoration: InputDecoration(
+                          enabledBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(color: Colors.white),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                const BorderSide(color: Colors.deepPurple),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          hintText: 'Phone',
                           fillColor: Colors.grey[200],
                           filled: true,
                         ),
@@ -147,7 +182,6 @@ class _RegisterPageState extends State<RegisterPage> {
                           hintText: 'Password',
                           fillColor: Colors.grey[200],
                           filled: true,
-                        
                         ),
                       ),
                     ),
@@ -173,7 +207,6 @@ class _RegisterPageState extends State<RegisterPage> {
                           hintText: 'Confirm Password',
                           fillColor: Colors.grey[200],
                           filled: true,
-                        
                         ),
                       ),
                     ),
@@ -204,37 +237,35 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                     const SizedBox(
-              height: 50,
-            ),
+                      height: 50,
+                    ),
 
-            GestureDetector(
-              onTap: (){
-                Navigator.pushAndRemoveUntil(
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
-                                builder: (context) =>  const AuthPage()
-                                    ),(route)=>false);
-              },
-              child: RichText(
-                text: TextSpan(
-                    text: "You're a member?",
-                    style: TextStyle(color: Colors.grey[500], fontSize: 20),
-                    children: const [
-                      TextSpan(
-                        text: "Login now",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.blue,
-                            fontSize: 20),
-                      )
-                    ]),
-              ),
-            ),
+                                builder: (context) => const AuthPage()),
+                            (route) => false);
+                      },
+                      child: RichText(
+                        text: TextSpan(
+                            text: "You're a member?",
+                            style: TextStyle(
+                                color: Colors.grey[500], fontSize: 20),
+                            children: const [
+                              TextSpan(
+                                text: "Login now",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.blue,
+                                    fontSize: 20),
+                              )
+                            ]),
+                      ),
+                    ),
                   ],
-                )
-                ),
-
-            
+                )),
           ],
         ),
       ),

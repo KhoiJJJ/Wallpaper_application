@@ -54,10 +54,7 @@ class _WallpaperState extends State<Wallpaper> {
     return Scaffold(
       body: Column(
         children: [
-          Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: const SearchBar(hintText: "Search Wallpaper....",)),
-          const SizedBox(height: 20,),
+          
           Expanded(
             child: Container(
               child: GridView.builder(

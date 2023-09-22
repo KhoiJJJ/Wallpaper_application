@@ -19,11 +19,10 @@ class _ProfilePageState extends State<ProfilePage> {
   final user = FirebaseAuth.instance.currentUser!;
   final TextEditingController _feedbackController = TextEditingController();
 
-  void submitFeedback(String feedback,User user) {
+  void submitFeedback(String feedback) {
     // Store feedback in Firebase Firestore
-    FirebaseFirestore.instance.collection('users').add({
+    FirebaseFirestore.instance.collection('feedback').add({
       'text': feedback,
-      'userEmail': user.email,
       'timestamp': FieldValue.serverTimestamp(),
     });
 
@@ -32,18 +31,17 @@ class _ProfilePageState extends State<ProfilePage> {
 
     // Show a confirmation message or navigate to another screen
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
+      SnackBar(
         content: Text('Feedback submitted successfully!'),
       ),
     );
   }
-
   @override
   void dispose() {
     _feedbackController.dispose();
     super.dispose();
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,47 +100,15 @@ class _ProfilePageState extends State<ProfilePage> {
                           text: "Logout",
                         )),
                   ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                    child: TextField(
-                      controller: _feedbackController,
-                      maxLines: 5,
-                      decoration: InputDecoration(
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(color: Colors.white),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              const BorderSide(color: Colors.deepPurple),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        hintText: 'Write your feedback...!',
-                        fillColor: Colors.grey[100],
-                        filled: true,
-                      ),
+                  TextField(
+                    controller: _feedbackController,
+                    maxLines: 5,
+                    decoration: InputDecoration(
+                      hintText: 'Enter your feedback...',
                     ),
                   ),
-                  const SizedBox(height: 16.0),
-                  TextButton(
-                    onPressed: () {
-                      submitFeedback(_feedbackController.text,user);
-                    },
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.blue),
-                      foregroundColor: MaterialStateProperty.all(Colors.white),
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(
-                              10.0), // Adjust the radius as needed
-                        ),
-                      ),
-                    ),
-                    child: Text('Submit Feedback',style: TextStyle(fontSize: 18),),
-                  )
+                  SizedBox(height: 16.0),
+                  
                 ],
               ),
             ),
@@ -151,4 +117,6 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     ));
   }
-}
+  }
+
+ 

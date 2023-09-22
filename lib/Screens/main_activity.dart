@@ -21,7 +21,7 @@ class _MainActivityPageState extends State<MainActivityPage> {
 
   List<Widget> bottomNavPages=[
     Wallpaper(),
-    const AccountPage(),
+    ProfilePage(),
   ];
   @override
   Widget build(BuildContext context) {
